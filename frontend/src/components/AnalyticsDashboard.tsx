@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default function AnalyticsDashboard() {
-  const [metrics, setMetrics] = useState({
+  const [metrics] = useState({
     totalConversations: 1240,
     ticketVolume: 156,
     resolutionRate: '82%',

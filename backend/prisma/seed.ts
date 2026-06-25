@@ -172,6 +172,68 @@ async function main() {
   });
   console.log('✅ Sample applications created');
 
+  // ─── 6. Sample Audit Logs ────────────────────────────────────────────────────
+  const sampleAuditLogs = [
+    {
+      actionType: 'INSERT', tableName: 'Student', recordId: 'sample-001',
+      newValue: { firstName: 'Aarav', lastName: 'Sharma', email: 'aarav@example.com', status: 'active' },
+      userRole: 'Admin', ipAddress: '103.24.1.55',
+      deviceInfo: 'Mozilla/5.0 Chrome/120 Windows NT 10.0',
+      changeReason: 'New student admission - BCA 2024 batch',
+    },
+    {
+      actionType: 'UPDATE', tableName: 'FeeStructure', recordId: 'sample-002',
+      oldValue: { tuitionFee: '45000.00', totalFee: '52000.00', academicYear: '2024-2025' },
+      newValue: { tuitionFee: '48000.00', totalFee: '55000.00', academicYear: '2024-2025' },
+      userRole: 'Admin', ipAddress: '103.24.1.55',
+      deviceInfo: 'Mozilla/5.0 Chrome/120 Windows NT 10.0',
+      changeReason: 'Annual fee revision approved by management',
+    },
+    {
+      actionType: 'UPDATE', tableName: 'Application', recordId: 'sample-003',
+      oldValue: { status: 'pending', email: 'priya.mehta@example.com' },
+      newValue: { status: 'approved', email: 'priya.mehta@example.com' },
+      userRole: 'Counselor', ipAddress: '192.168.1.20',
+      deviceInfo: 'Mozilla/5.0 Firefox/119 Windows NT 10.0',
+      changeReason: 'Application documents verified and approved',
+    },
+    {
+      actionType: 'DELETE', tableName: 'Student', recordId: 'sample-004',
+      oldValue: { firstName: 'Ravi', lastName: 'Patil', status: 'dropped', course: 'B.Sc' },
+      newValue: null,
+      userRole: 'Admin', ipAddress: '103.24.1.55',
+      deviceInfo: 'Mozilla/5.0 Chrome/120 MacOS',
+      changeReason: 'Student officially withdrew from institute',
+    },
+    {
+      actionType: 'INSERT', tableName: 'Course', recordId: 'sample-005',
+      newValue: { code: 'BTech', name: 'Bachelor of Technology', durationYears: 4 },
+      userRole: 'Admin', ipAddress: '103.24.1.55',
+      deviceInfo: 'Mozilla/5.0 Chrome/120 Windows NT 10.0',
+      changeReason: 'New course added for academic year 2025',
+    },
+    {
+      actionType: 'UPDATE', tableName: 'Ticket', recordId: 'sample-006',
+      oldValue: { status: 'open', priority: 'high' },
+      newValue: { status: 'resolved', priority: 'high' },
+      userRole: 'Faculty', ipAddress: '10.0.0.15',
+      deviceInfo: 'Mozilla/5.0 Safari/17 iPhone iOS 17',
+      changeReason: 'Issue resolved by technical team',
+    },
+    {
+      actionType: 'LOGIN', tableName: 'User', recordId: 'sample-007',
+      newValue: { email: 'admin@institute.edu', loginTime: new Date().toISOString() },
+      userRole: 'Admin', ipAddress: '103.24.1.55',
+      deviceInfo: 'Mozilla/5.0 Chrome/120 Windows NT 10.0',
+      changeReason: null,
+    },
+  ];
+
+  for (const log of sampleAuditLogs) {
+    await prisma.auditLog.create({ data: log });
+  }
+  console.log('✅ Sample audit logs created');
+
   console.log('\n🎉 Database seeded successfully!');
 }
 

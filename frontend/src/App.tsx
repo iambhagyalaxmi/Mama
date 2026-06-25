@@ -3,6 +3,7 @@ import ChatWidget from './components/ChatWidget';
 import TicketDashboard from './components/TicketDashboard';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
 import AuthLogin from './components/AuthLogin';
+import AuditDashboard from './components/AuditDashboard';
 import { Moon, Sun } from 'lucide-react';
 
 export default function App() {
@@ -56,6 +57,7 @@ export default function App() {
         <main className="space-y-8">
           <AnalyticsDashboard />
           <TicketDashboard />
+          <AuditDashboard />
         </main>
       </div>
 

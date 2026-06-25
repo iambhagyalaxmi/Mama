@@ -106,6 +106,7 @@ model User {
 
   conversations Conversation[]
   tickets       Ticket[]
+  auditLogs     AuditLog[]
 }
 
 model Conversation {
@@ -156,4 +157,25 @@ model Feedback {
   createdAt      DateTime     @default(now())
 
   conversation   Conversation @relation(fields: [conversationId], references: [id])
+}
+
+model AuditLog {
+  logId        String   @id @default(uuid()) @db.Uuid
+  userId       String?  @db.Uuid
+  userRole     String?  // Admin, Counselor, Faculty, Staff
+  actionType   String   // INSERT, UPDATE, DELETE, LOGIN, LOGOUT
+  tableName    String
+  recordId     String
+  oldValue     Json?
+  newValue     Json?
+  changeReason String?
+  ipAddress    String?
+  deviceInfo   String?
+  createdAt    DateTime @default(now())
+
+  user         User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([tableName, recordId])
+  @@index([actionType])
+  @@index([createdAt])
 }

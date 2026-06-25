@@ -155,7 +155,38 @@ const tools: Groq.Chat.ChatCompletionTool[] = [
       },
     },
   },
+  {
+    type: 'function',
+    function: {
+      name: 'queryAuditLogs',
+      description: 'Query the database audit logs to see exactly who changed what data, when, and why. Use this to investigate modifications to records.',
+      parameters: {
+        type: 'object',
+        properties: {
+          tableName: { type: 'string', description: 'e.g., Student, Course, FeeStructure, Application' },
+          actionType: { type: 'string', description: 'e.g., INSERT, UPDATE, DELETE' },
+          limit: { type: 'integer', description: 'Max number of logs to return (default 5)' }
+        },
+      },
+    },
+  },
 ];
+
+async function queryAuditLogs(tableName?: string, actionType?: string, limit: number = 5) {
+  const where: any = {};
+  if (tableName) where.tableName = tableName;
+  if (actionType) where.actionType = actionType;
+
+  const logs = await prisma.auditLog.findMany({
+    where,
+    orderBy: { createdAt: 'desc' },
+    take: limit,
+    include: { user: { select: { name: true, email: true, role: true } } }
+  });
+
+  if (logs.length === 0) return JSON.stringify({ message: "No audit logs found matching criteria." });
+  return JSON.stringify(logs);
+}
 
 async function generateResponse(message: string, sessionId: string): Promise<{ text: string, suggestions: string[] }> {
   // 1. Fetch persistent conversation
@@ -213,6 +244,8 @@ async function generateResponse(message: string, sessionId: string): Promise<{ t
           toolResult = await compareCourses(args.courseCodes);
         } else if (toolCall.function.name === 'createSupportTicket') {
           toolResult = await createSupportTicket(args.title, args.description, args.userEmail, sessionId);
+        } else if (toolCall.function.name === 'queryAuditLogs') {
+          toolResult = await queryAuditLogs(args.tableName, args.actionType, args.limit);
         }
       } catch (e: any) {
         toolResult = JSON.stringify({ error: e.message });

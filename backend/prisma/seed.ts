@@ -5,6 +5,120 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Seeding database...');
 
+  // ─── 0. Users (Admin, Counselor, Faculty, Staff, Student) ───────────────────
+  const users = await Promise.all([
+    prisma.user.upsert({
+      where: { email: 'admin@institute.edu' },
+      update: { phone: '+91-9876000001', department: 'Administration', isActive: true },
+      create: {
+        name: 'Dr. Meera Iyer',
+        email: 'admin@institute.edu',
+        phone: '+91-9876000001',
+        role: 'admin',
+        department: 'Administration',
+        isActive: true,
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'counselor1@institute.edu' },
+      update: { phone: '+91-9876000002', department: 'Admissions', isActive: true },
+      create: {
+        name: 'Rahul Desai',
+        email: 'counselor1@institute.edu',
+        phone: '+91-9876000002',
+        role: 'counselor',
+        department: 'Admissions',
+        isActive: true,
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'counselor2@institute.edu' },
+      update: { phone: '+91-9876000003', department: 'Student Affairs', isActive: true },
+      create: {
+        name: 'Sneha Kulkarni',
+        email: 'counselor2@institute.edu',
+        phone: '+91-9876000003',
+        role: 'counselor',
+        department: 'Student Affairs',
+        isActive: true,
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'faculty.cs@institute.edu' },
+      update: { phone: '+91-9876000004', department: 'Computer Science', isActive: true },
+      create: {
+        name: 'Prof. Arvind Nair',
+        email: 'faculty.cs@institute.edu',
+        phone: '+91-9876000004',
+        role: 'faculty',
+        department: 'Computer Science',
+        isActive: true,
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'faculty.mca@institute.edu' },
+      update: { phone: '+91-9876000005', department: 'MCA Department', isActive: true },
+      create: {
+        name: 'Prof. Sunita Rao',
+        email: 'faculty.mca@institute.edu',
+        phone: '+91-9876000005',
+        role: 'faculty',
+        department: 'MCA Department',
+        isActive: true,
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'staff.accounts@institute.edu' },
+      update: { phone: '+91-9876000006', department: 'Accounts & Finance', isActive: true },
+      create: {
+        name: 'Anil Patkar',
+        email: 'staff.accounts@institute.edu',
+        phone: '+91-9876000006',
+        role: 'staff',
+        department: 'Accounts & Finance',
+        isActive: true,
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'staff.admissions@institute.edu' },
+      update: { phone: '+91-9876000007', department: 'Admissions Office', isActive: true },
+      create: {
+        name: 'Kavita Bhatia',
+        email: 'staff.admissions@institute.edu',
+        phone: '+91-9876000007',
+        role: 'staff',
+        department: 'Admissions Office',
+        isActive: true,
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'student.bca@institute.edu' },
+      update: { phone: '+91-9876000008', department: 'BCA Program', isActive: true },
+      create: {
+        name: 'Aarav Sharma',
+        email: 'student.bca@institute.edu',
+        phone: '+91-9876000008',
+        role: 'student',
+        department: 'BCA Program',
+        isActive: true,
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'student.mca@institute.edu' },
+      update: { phone: '+91-9876000009', department: 'MCA Program', isActive: true },
+      create: {
+        name: 'Priya Mehta',
+        email: 'student.mca@institute.edu',
+        phone: '+91-9876000009',
+        role: 'student',
+        department: 'MCA Program',
+        isActive: true,
+      },
+    }),
+  ]);
+  console.log(`✅ ${users.length} users created`);
+
+
   // ─── 1. Courses ─────────────────────────────────────────────────────────────
   const courses = await Promise.all([
     prisma.course.upsert({

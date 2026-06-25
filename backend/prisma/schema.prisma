@@ -100,9 +100,14 @@ model User {
   id            String         @id @default(uuid()) @db.Uuid
   name          String
   email         String         @unique
+  phone         String?
   googleId      String?        @unique
-  role          String         @default("student") // student, agent, admin
+  role          String         @default("student") // student, counselor, faculty, staff, admin
+  department    String?        // e.g., Computer Science, Admissions
+  isActive      Boolean        @default(true)
+  lastLoginAt   DateTime?
   createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
 
   conversations Conversation[]
   tickets       Ticket[]

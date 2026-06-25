@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { X, Send, MessageCircle, RotateCcw, Bot } from 'lucide-react';
+import { X, Send, RotateCcw } from 'lucide-react';
 
 interface Message {
   sender: 'user' | 'bot' | 'system';
@@ -17,6 +17,7 @@ const QUICK_REPLIES = [
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [bookOpen, setBookOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -103,8 +104,12 @@ export default function ChatWidget() {
             className="flex items-center gap-3 px-5 py-4 shrink-0 shadow-sm relative z-10"
             style={{ background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)' }}
           >
-            <div className="relative shrink-0 flex items-center justify-center w-11 h-11 bg-white/20 rounded-full border border-white/30 backdrop-blur-sm">
-              <Bot className="text-white w-6 h-6" />
+            <div className="relative shrink-0 w-11 h-11">
+              <img
+                src="/child_book_avatar.png"
+                alt="EduBot"
+                className="w-11 h-11 rounded-full object-cover border-2 border-white/40 shadow-md"
+              />
               <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-[#1d4ed8] bg-emerald-400" />
             </div>
             <div className="flex-1 min-w-0">
@@ -127,8 +132,8 @@ export default function ChatWidget() {
           <div className="flex-1 overflow-y-auto px-5 py-6 space-y-5 scroll-smooth bg-slate-50/50 dark:bg-slate-900/50">
             {messages.length === 0 && (
               <div className="flex flex-col items-center justify-center h-full text-center px-4 animate-in fade-in duration-500">
-                <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/40 rounded-full flex items-center justify-center mb-4 shadow-inner">
-                  <Bot className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                <div className="w-20 h-20 rounded-full overflow-hidden mb-4 shadow-lg border-4 border-blue-100 dark:border-blue-900/40">
+                  <img src="/child_book_avatar.png" alt="EduBot" className="w-full h-full object-cover" />
                 </div>
                 <h3 className="text-slate-800 dark:text-slate-200 font-bold text-lg mb-1">How can we help?</h3>
                 <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
@@ -141,8 +146,8 @@ export default function ChatWidget() {
               <div key={i} className="flex flex-col gap-2">
                 <div className={`flex gap-3 max-w-full ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                   {msg.sender !== 'user' && (
-                    <div className="w-8 h-8 rounded-full shrink-0 bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center border border-blue-200 dark:border-blue-800 shadow-sm mt-1">
-                      <Bot className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    <div className="w-8 h-8 rounded-full shrink-0 overflow-hidden border border-blue-200 dark:border-blue-800 shadow-sm mt-1">
+                      <img src="/child_book_avatar.png" alt="EduBot" className="w-full h-full object-cover" />
                     </div>
                   )}
                   <div className={`flex flex-col gap-1 min-w-[60px] max-w-[80%] ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
@@ -180,8 +185,8 @@ export default function ChatWidget() {
 
             {isTyping && (
               <div className="flex gap-3 items-end">
-                <div className="w-8 h-8 rounded-full shrink-0 bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center border border-blue-200 dark:border-blue-800 shadow-sm">
-                  <Bot className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <div className="w-8 h-8 rounded-full shrink-0 overflow-hidden border border-blue-200 dark:border-blue-800 shadow-sm">
+                  <img src="/child_book_avatar.png" alt="EduBot" className="w-full h-full object-cover" />
                 </div>
                 <div className="bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700 rounded-2xl rounded-tl-sm px-4 py-3.5 shadow-sm">
                   <div className="flex gap-1.5 items-center h-2">
@@ -239,13 +244,39 @@ export default function ChatWidget() {
         </div>
       )}
 
-      {/* FAB */}
+      {/* FAB - Child Book Avatar */}
       <button
-        onClick={() => setIsOpen((o) => !o)}
-        className="relative w-16 h-16 rounded-full flex items-center justify-center shadow-[0_8px_30px_rgba(37,99,235,0.4)] transition-all duration-300 hover:scale-110 active:scale-95 bg-gradient-to-br from-blue-600 to-blue-800"
+        onClick={() => {
+          setBookOpen(true);
+          setTimeout(() => {
+            setIsOpen((o) => !o);
+            setTimeout(() => setBookOpen(false), 400);
+          }, 350);
+        }}
+        title="Chat with EduBot"
+        className="relative w-20 h-20 rounded-full overflow-hidden shadow-[0_8px_32px_rgba(99,102,241,0.55)] transition-all duration-300 hover:scale-110 active:scale-95 border-4 border-white dark:border-slate-700"
+        style={{
+          background: 'linear-gradient(135deg, #818cf8 0%, #6366f1 50%, #4f46e5 100%)'
+        }}
       >
-        {isOpen ? <X size={28} className="text-white" /> : <MessageCircle size={28} className="text-white" />}
-        {!isOpen && <span className="absolute top-0 right-0 w-4 h-4 bg-emerald-400 rounded-full border-[3px] border-white animate-pulse" />}
+        {isOpen ? (
+          <div className="w-full h-full flex items-center justify-center">
+            <X size={30} className="text-white drop-shadow" />
+          </div>
+        ) : (
+          <img
+            src="/child_book_avatar.png"
+            alt="Open EduBot chat"
+            className={`w-full h-full object-cover transition-all duration-300 ${
+              bookOpen ? 'scale-125 brightness-125' : 'scale-100'
+            }`}
+          />
+        )}
+        {!isOpen && (
+          <span className="absolute top-1 right-1 w-4 h-4 bg-emerald-400 rounded-full border-[3px] border-white animate-pulse shadow" />
+        )}
+        {/* shimmer ring on hover */}
+        <span className="absolute inset-0 rounded-full ring-4 ring-indigo-300/40 dark:ring-indigo-500/30 animate-ping" style={{ animationDuration: '2.5s' }} />
       </button>
     </div>
   );

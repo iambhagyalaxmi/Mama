@@ -16,8 +16,9 @@ export default function TicketDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const API_URL = import.meta.env.VITE_API_URL || '';
     // We would fetch tickets normally, using mock data if backend isn't responding yet
-    axios.get('http://localhost:5000/api/tickets')
+    axios.get(`${API_URL}/api/tickets`)
       .then(res => setTickets(res.data))
       .catch(() => {
         setTickets([
